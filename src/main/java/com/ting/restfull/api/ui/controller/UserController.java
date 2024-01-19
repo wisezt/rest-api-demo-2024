@@ -71,9 +71,15 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public String getUsers() {
-        return "Delete User";
+    @DeleteMapping(path = "{userId}")
+    public ResponseEntity<String> getUsers(@PathVariable String userId) {
+
+        if(users.containsKey(userId)){
+            users.remove(userId);
+            return new ResponseEntity<>("Deleted " + userId, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not found: " + userId, HttpStatus.NOT_FOUND);
+        }
     }
 
 
