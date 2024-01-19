@@ -3,16 +3,21 @@ package com.ting.restfull.api.ui.controller;
 import com.ting.restfull.api.model.response.UserDetailsRequestModel;
 import com.ting.restfull.api.model.response.UserRest;
 import jakarta.validation.Valid;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/users") // http://localhost:8080/users
 public class UserController {
+
+    Map<String, UserRest> users = new HashMap<>();
 
     @GetMapping
     public String getUsers(
@@ -29,13 +34,15 @@ public class UserController {
     })
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 
-        System.out.println("Recieved userId: " + userId);
-        UserRest user = new UserRest(userId);
-        user.setEmail("user" + userId + "@test.com");
-        user.setFirstName("fristName" + userId);
-        user.setLastName("lastName" + userId);
+        UserRest user;
+        if (users.containsKey(userId)){
+            user = users.get(userId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+
     }
 
     @PostMapping
@@ -51,6 +58,10 @@ public class UserController {
         userRest.setLastName(userDetailsRequestModel.getLastName());
         userRest.setFirstName(userDetailsRequestModel.getFirstName());
         userRest.setEmail(userDetailsRequestModel.getEmail());
+
+        if (users == null) users = new HashMap<>();
+        users.put(userRest.getUserId(), userRest);
+
         System.out.println(userRest);
         return new ResponseEntity<>(userRest, HttpStatus.OK);
     }
