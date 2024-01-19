@@ -1,11 +1,17 @@
 package com.ting.restfull.api.model.response;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UserRest {
     private String firstName;
+
     private String lastName;
+
     private String userId;
+
     private String email;
 
     public UserRest(String userId) {
@@ -42,5 +48,15 @@ public class UserRest {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRest{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

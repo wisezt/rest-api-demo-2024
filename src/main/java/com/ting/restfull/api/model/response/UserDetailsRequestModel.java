@@ -1,8 +1,15 @@
 package com.ting.restfull.api.model.response;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class UserDetailsRequestModel {
+    @NotNull(message="First Name cannot be null")
     private String firstName;
+    @NotNull(message="Last Name cannot be null")
     private String lastName;
+    @NotNull(message="Password cannot be null")
+    @Size(min=8, max=16, message = "Password must be between 8 to 16 characters")
     private String password;
     private String email;
 

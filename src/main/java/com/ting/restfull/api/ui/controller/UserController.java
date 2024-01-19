@@ -2,6 +2,7 @@ package com.ting.restfull.api.ui.controller;
 
 import com.ting.restfull.api.model.response.UserDetailsRequestModel;
 import com.ting.restfull.api.model.response.UserRest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +39,14 @@ public class UserController {
     }
 
     @PostMapping
-    @GetMapping(path = "{userId}"
-            ,consumes = {
+    @GetMapping(consumes = {
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE}
             ,produces = {
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE
     })
-    public ResponseEntity<UserRest> createUser(@RequestBody UserDetailsRequestModel userDetailsRequestModel) {
+    public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetailsRequestModel) {
         UserRest userRest = new UserRest(UUID.randomUUID().toString());
         userRest.setLastName(userDetailsRequestModel.getLastName());
         userRest.setFirstName(userDetailsRequestModel.getFirstName());
