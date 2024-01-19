@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
 @XmlRootElement
 public class UserRest {
     private String firstName;
@@ -11,7 +12,7 @@ public class UserRest {
     private String lastName;
 
     private String userId;
-
+    @NotNull
     private String email;
 
     private String password;
@@ -62,11 +63,6 @@ public class UserRest {
 
     @Override
     public String toString() {
-        return "UserRest{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userId='" + userId + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "UserRest{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", userId='" + userId + '\'' + ", email='" + email + '\'' + '}';
     }
 }

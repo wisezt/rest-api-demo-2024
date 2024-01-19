@@ -28,14 +28,18 @@ public class UserController {
     @GetMapping(path = "{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 
-        UserRest user;
+//        users.get(userId);
+
+        UserRest user =  users.get(userId);
+
+        user.getEmail();
+
         if (users.containsKey(userId)) {
             user = users.get(userId);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
 
     }
 
