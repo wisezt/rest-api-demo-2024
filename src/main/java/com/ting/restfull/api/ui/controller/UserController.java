@@ -1,5 +1,6 @@
 package com.ting.restfull.api.ui.controller;
 
+import com.ting.restfull.api.model.response.UserDetailPutModel;
 import com.ting.restfull.api.model.response.UserDetailsRequestModel;
 import com.ting.restfull.api.model.response.UserRest;
 import jakarta.validation.Valid;
@@ -20,22 +21,15 @@ public class UserController {
     Map<String, UserRest> users = new HashMap<>();
 
     @GetMapping
-    public String getUsers(
-            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(value = "limit") int limit,
-            @RequestParam(value = "sort", required = false) String sort) {
+    public String getUsers(@RequestParam(value = "page", defaultValue = "1", required = false) int page, @RequestParam(value = "limit") int limit, @RequestParam(value = "sort", required = false) String sort) {
         return "get users was called with page = " + page + " and limit = " + limit;
     }
 
-    @GetMapping(path = "{userId}"
-            ,produces = {
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-    })
+    @GetMapping(path = "{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 
         UserRest user;
-        if (users.containsKey(userId)){
+        if (users.containsKey(userId)) {
             user = users.get(userId);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
@@ -45,14 +39,7 @@ public class UserController {
 
     }
 
-    @PostMapping
-    @GetMapping(consumes = {
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE}
-            ,produces = {
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_JSON_VALUE
-    })
+    @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetailsRequestModel) {
         UserRest userRest = new UserRest(UUID.randomUUID().toString());
         userRest.setLastName(userDetailsRequestModel.getLastName());
@@ -66,9 +53,22 @@ public class UserController {
         return new ResponseEntity<>(userRest, HttpStatus.OK);
     }
 
-    @PutMapping
-    public String updateUser() {
-        return "Update user";
+    @PutMapping(path = "{userId}", consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<UserRest> updateUser(@Valid @RequestBody UserDetailPutModel userDetailPutModel, @PathVariable String userId) {
+
+        if (!users.containsKey(userId)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        UserRest user = users.get(userId);
+        if (userDetailPutModel.getFirstName() != null) user.setFirstName(userDetailPutModel.getFirstName());
+        if (userDetailPutModel.getLastName() != null) user.setLastName(userDetailPutModel.getLastName());
+
+        users.put(userId, user);
+
+        System.out.println("User updated: " + user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping
