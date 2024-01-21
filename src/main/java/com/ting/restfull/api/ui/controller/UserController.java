@@ -37,7 +37,7 @@ public class UserController {
 //        Following Code can trigger exception which userId is not exist
 //        user =  users.get(userId);
 //        user.getEmail();
-        if (true) throw new UserServiceException("This is User Service Exception!");
+//        if (true) throw new UserServiceException("This is User Service Exception!");
 
         if (users.containsKey(userId)) {
             user = users.get(userId);
