@@ -1,5 +1,6 @@
 package com.ting.restfull.api.ui.controller;
 
+import com.ting.restfull.api.exception.UserServiceException;
 import com.ting.restfull.api.model.response.UserDetailPutModel;
 import com.ting.restfull.api.model.response.UserDetailsRequestModel;
 import com.ting.restfull.api.model.response.UserRest;
@@ -29,8 +30,9 @@ public class UserController {
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
         UserRest user;
 //        Following Code can trigger exception which userId is not exist
-        user =  users.get(userId);
-        user.getEmail();
+//        user =  users.get(userId);
+//        user.getEmail();
+        if (true) throw new UserServiceException("This is User Service Exception!");
 
         if (users.containsKey(userId)) {
             user = users.get(userId);

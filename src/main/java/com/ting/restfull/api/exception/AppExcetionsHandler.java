@@ -40,6 +40,19 @@ public class AppExcetionsHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(value = {UserServiceException.class})
+    public ResponseEntity<Object> handleUserServiceException(Exception ex, WebRequest request){
+
+        String errorMessageDescription = ex.getLocalizedMessage();
+        if (errorMessageDescription == null) errorMessageDescription = ex.toString();
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
+        System.out.println("UserServiceException is triggered");
+
+        return  new ResponseEntity<>(
+                errorMessage, HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
 
 
 
