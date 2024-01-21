@@ -2,6 +2,8 @@ package com.ting.restfull.api.exception;
 
 
 import java.net.http.HttpHeaders;
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,8 +15,18 @@ public class AppExcetionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request){
+
+        String errorMessageDescription = ex.getLocalizedMessage();
+        if (errorMessageDescription == null) errorMessageDescription = ex.toString();
+
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
+
+
         return  new ResponseEntity<>(
-                ex, HttpStatus.INTERNAL_SERVER_ERROR
+                errorMessage, HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
+
+
 }

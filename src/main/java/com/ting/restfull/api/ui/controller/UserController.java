@@ -27,10 +27,10 @@ public class UserController {
 
     @GetMapping(path = "{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
-
+        UserRest user;
 //        Following Code can trigger exception which userId is not exist
-//        UserRest user =  users.get(userId);
-//        user.getEmail();
+        user =  users.get(userId);
+        user.getEmail();
 
         if (users.containsKey(userId)) {
             user = users.get(userId);
