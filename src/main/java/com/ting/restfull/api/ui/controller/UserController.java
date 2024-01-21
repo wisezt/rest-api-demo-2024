@@ -4,8 +4,10 @@ import com.ting.restfull.api.exception.UserServiceException;
 import com.ting.restfull.api.model.response.UserDetailPutModel;
 import com.ting.restfull.api.model.response.UserDetailsRequestModel;
 import com.ting.restfull.api.model.response.UserRest;
+import com.ting.restfull.api.service.UserService;
 import jakarta.validation.Valid;
 import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users") // http://localhost:8080/users
 public class UserController {
+
+    @Autowired
+    UserService userService;
 
     Map<String, UserRest> users = new HashMap<>();
 
@@ -45,10 +50,7 @@ public class UserController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetailsRequestModel) {
-        UserRest userRest = new UserRest(UUID.randomUUID().toString());
-        userRest.setLastName(userDetailsRequestModel.getLastName());
-        userRest.setFirstName(userDetailsRequestModel.getFirstName());
-        userRest.setEmail(userDetailsRequestModel.getEmail());
+        UserRest userRest = userService.createUserRest(userDetailsRequestModel);
 
         if (users == null) users = new HashMap<>();
         users.put(userRest.getUserId(), userRest);
