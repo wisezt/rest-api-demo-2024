@@ -20,12 +20,27 @@ public class AppExcetionsHandler extends ResponseEntityExceptionHandler {
         if (errorMessageDescription == null) errorMessageDescription = ex.toString();
 
         ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
-
+        System.out.println("handleAnyException is triggered");
 
         return  new ResponseEntity<>(
                 errorMessage, HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
+    @ExceptionHandler(value = {NullPointerException.class})
+    public ResponseEntity<Object> handleNullPointException(Exception ex, WebRequest request){
+
+        String errorMessageDescription = ex.getLocalizedMessage();
+        if (errorMessageDescription == null) errorMessageDescription = ex.toString();
+        ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
+        System.out.println("handleNullPointException is triggered");
+
+        return  new ResponseEntity<>(
+                errorMessage, HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+
 
 
 
